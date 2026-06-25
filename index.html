@@ -1,0 +1,1676 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Stevie Pederson">
+<meta name="dcterms.date" content="2026-06-25">
+
+<title>BiocWorkflows Landscape Analysis</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="index_files/libs/clipboard/clipboard.min.js"></script>
+<script src="index_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="index_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="index_files/libs/quarto-html/popper.min.js"></script>
+<script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="index_files/libs/quarto-html/anchor.min.js"></script>
+<link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="index_files/libs/bootstrap/bootstrap-209945ea1accca814fac236a8cac2dc0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#bioc-workflow-landscape-analysis" id="toc-bioc-workflow-landscape-analysis" class="nav-link active" data-scroll-target="#bioc-workflow-landscape-analysis">Bioc Workflow Landscape Analysis</a>
+  <ul class="collapse">
+  <li><a href="#projection-to-the-r-journal" id="toc-projection-to-the-r-journal" class="nav-link" data-scroll-target="#projection-to-the-r-journal">Projection to the R Journal</a></li>
+  <li><a href="#detailed-table" id="toc-detailed-table" class="nav-link" data-scroll-target="#detailed-table">Detailed Table</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">BiocWorkflows Landscape Analysis</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Stevie Pederson </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">June 25, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; margin: 0; padding: 16px; background: #fff; color: #111; }
+  h1 { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
+  .subtitle { font-size: 12px; color: #666; margin-bottom: 16px; }
+  .controls { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+  .controls select, .controls input { font-size: 12px; padding: 5px 8px; border: 1px solid #ccc; border-radius: 6px; background: #fff; color: #111; }
+  .controls input { width: 200px; }
+  .count { font-size: 12px; color: #666; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  thead th { background: #f5f5f5; font-weight: 600; padding: 7px 8px; text-align: left; border-bottom: 2px solid #ddd; white-space: nowrap; position: sticky; top: 0; z-index: 1; }
+  tbody tr:nth-child(even) { background: #fafafa; }
+  tbody tr:hover { background: #eef4ff; }
+  td { padding: 6px 8px; border-bottom: 1px solid #eee; vertical-align: top; }
+  td.title { max-width: 260px; }
+  td.authors { max-width: 160px; color: #444; }
+  .badge { display: inline-block; padding: 2px 7px; border-radius: 10px; font-size: 11px; font-weight: 500; white-space: nowrap; }
+  .badge-f-method { background: #dbeafe; color: #1d4ed8; }
+  .badge-f-software { background: #dcfce7; color: #166534; }
+  .badge-f-research { background: #fef9c3; color: #854d0e; }
+  .badge-f-editorial { background: #f3f4f6; color: #374151; }
+  .badge-rj-packages { background: #ede9fe; color: #5b21b6; }
+  .badge-rj-reviews { background: #fce7f3; color: #9d174d; }
+  .badge-rj-compare { background: #ffedd5; color: #9a3412; }
+  .badge-rj-apps { background: #d1fae5; color: #065f46; }
+  .yes { color: #15803d; font-weight: 600; }
+  .no { color: #9ca3af; }
+  .partial { color: #b45309; font-weight: 500; }
+  a { color: #1d4ed8; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; font-size: 11px; }
+  .legend-item { display: flex; align-items: center; gap: 4px; }
+  @media print { .controls { display: none; } }
+</style>
+<section id="bioc-workflow-landscape-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="bioc-workflow-landscape-analysis">Bioc Workflow Landscape Analysis</h2>
+<p>This is a brief landscape analysis of publications included in the F1000R Bioconductor Gateway. The publications were summarised using claude.ai taking note of:</p>
+<ul>
+<li>The original article type</li>
+<li>Where it might possibly fit in the R Journal</li>
+<li>Whether a BiocWorkflow exists corresponding to each article</li>
+<li>Whether a Bioconductor package corresponds to each article</li>
+</ul>
+<p>In total, 85 articles have been published through the <a href="https://f1000research.com/gateways/bioconductor">F1000R Bioconductor Gateway</a>, excluding one python package attributed to this gateway. Referring to the <a href="https://bioconductor.org/packages/release/BiocViews.html#___Workflow">Workflows provided on BiocViews</a>, only 28 Bioconductor Worflows have been published on the Bioconductor site. Of these, 15 were also published using the F1000R Gateway.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Summary By Article Type</caption>
+<colgroup>
+<col style="width: 33%">
+<col style="width: 6%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">F1000R Type</th>
+<th style="text-align: right;">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Software Tool Article</td>
+<td style="text-align: right;">56</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Method Article</td>
+<td style="text-align: right;">23</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Research Article</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Editorial</td>
+<td style="text-align: right;">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/pubs-by-year-1.png" class="img-fluid figure-img" width="768"></p>
+<figcaption><em>After launching the Bioconductor Gateway in 2013, the above figure shows the number of articles published each year, noting any which were additionally published as a Bioc Workflow</em></figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Of the above articles also published as a Bioc Workflow, which F1000R article type were they initially published as.</caption>
+<colgroup>
+<col style="width: 33%">
+<col style="width: 12%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">F1000R Type</th>
+<th style="text-align: right;">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Method Article</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Research Article</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Software Tool Article</td>
+<td style="text-align: right;">10</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Total</strong></td>
+<td style="text-align: right;"><strong>15</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<section id="projection-to-the-r-journal" class="level3">
+<h3 class="anchored" data-anchor-id="projection-to-the-r-journal">Projection to the R Journal</h3>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/projections-1.png" class="img-fluid figure-img" width="960"></p>
+<figcaption><em>Excluding the single Editorial article, each article was projected by Claude.ai to predict the most suitable article type in the R Journal, and what type the original article was. The top row represents articles <strong>not</strong> associated with a Bioc Workflow, and as such could be published independently of any workflow-related review process. It may be plausible that all articles in the top row require no input from the Bioconductor community. Only the bottom row, representing the articles additionally published as Bioc Workflows, would require specific input from the Bioc community</em></figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="detailed-table" class="level3">
+<h3 class="anchored" data-anchor-id="detailed-table">Detailed Table</h3>
+<p class="subtitle">
+85 R-focussed articles from the Bioconductor Gateway on F1000Research, with Claude-suggested R Journal article type and Bioconductor workflow/package availability. Sorted newest to oldest.
+</p>
+<div class="legend">
+<p><strong style="font-size:11px;margin-right:4px">F1000R types:</strong> <span class="badge badge-f-method">Method Article</span> <span class="badge badge-f-software">Software Tool Article</span> <span class="badge badge-f-research">Research Article</span> <span class="badge badge-f-editorial">Editorial</span> <br> <strong style="font-size:11px;margin-right:4px">R Journal suggested:</strong> <span class="badge badge-rj-packages">Packages</span> <span class="badge badge-rj-reviews">Reviews &amp; Proposals</span> <span class="badge badge-rj-compare">Comparisons &amp; Benchmarking</span> <span class="badge badge-rj-apps">Applications</span></p>
+</div>
+<div class="controls">
+<p><input type="text" id="search" placeholder="Search title or author…" oninput="filterTable()"> <select id="filterF1000" onchange="filterTable()"> <option value="">All F1000R types</option> <option value="Method Article">Method Article</option> <option value="Software Tool Article">Software Tool Article</option> <option value="Research Article">Research Article</option> <option value="Editorial">Editorial</option> </select> <select id="filterRJ" onchange="filterTable()"> <option value="">All R Journal types</option> <option value="Packages">Packages</option> <option value="Reviews and Proposals">Reviews and Proposals</option> <option value="Comparisons and Benchmarking">Comparisons and Benchmarking</option> <option value="Applications">Applications</option> </select> <select id="filterWorkflow" onchange="filterTable()"> <option value="">Bioc Workflow: any</option> <option value="Yes">Has Bioc Workflow</option> <option value="No">No Bioc Workflow</option> </select> <select id="filterPkg" onchange="filterTable()"> <option value="">Bioc Package: any</option> <option value="Yes">Has Bioc Package</option> <option value="No">No Bioc Package</option> </select> <select id="filterYear" onchange="filterTable()"> <option value="">All years</option> <option value="2025">2025</option> <option value="2024">2024</option> <option value="2023">2023</option> <option value="2022">2022</option> <option value="2021">2021</option> <option value="2020">2020</option> <option value="2019">2019</option> <option value="2018">2018</option> <option value="2017">2017</option> <option value="2016">2016</option> <option value="2015">2015</option> <option value="2014">2014</option> <option value="2013">2013</option> </select></p>
+</div>
+<div id="count" class="count">
+
+</div>
+<table id="mainTable">
+<thead>
+<tr>
+<th>
+#
+</th>
+<th>
+Article Title
+</th>
+<th>
+Authors
+</th>
+<th>
+Year
+</th>
+<th>
+F1000R Type
+</th>
+<th>
+Suggested R Journal Type
+</th>
+<th>
+Bioc Workflow?
+</th>
+<th>
+Bioc Package?
+</th>
+</tr>
+</thead>
+<tbody id="tableBody">
+</tbody>
+</table>
+<p style="font-size:11px;color:#888;margin-top:16px">
+Notes: “Bioc Workflow” = a corresponding workflow package exists on Bioconductor (bioconductor.org/packages/workflows). “Bioc Package” = one or more software packages on Bioconductor are directly associated with the paper. Suggested R Journal types are indicative based on the primary nature of each article. Sources: F1000Research Bioconductor Gateway (all 5 pages, 86 articles); Bioconductor workflow package index.
+</p>
+<script>
+const data = [
+  // Page 1 (newest)
+  {
+    title: "CBN2Path: an R/Bioconductor package for the analysis of cancer progression pathways using Conjunctive Bayesian Networks",
+    url: "https://f1000research.com/articles/14-834",
+    authors: "Choi-Kim W, Hosseini S",
+    year: 2025,
+    f1000type: "Software Tool Article",
+    rjtype: "Packages",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "CBN2Path"
+  },
+  {
+    title: "An updated Bioconductor workflow for correlation profiling subcellular proteomics",
+    url: "https://f1000research.com/articles/14-714",
+    authors: "Hutchings C, Krueger T, Crook OM, Gatto L, Lilley KS, Breckels LM",
+    year: 2025,
+    f1000type: "Software Tool Article",
+    rjtype: "Applications",
+    workflow: "Yes",
+    pkg: "Yes",
+    pkgNote: "pRoloc"
+  },
+  {
+    title: "A streamlined workflow for long-read DNA methylation analysis with NanoMethViz and Bioconductor",
+    url: "https://f1000research.com/articles/13-1243",
+    authors: "Su S, Xiao L, Lancaster J, Cameron T, Breslin K, Hickey PF, Blewitt ME, Gouil Q, Ritchie ME",
+    year: 2025,
+    f1000type: "Software Tool Article",
+    rjtype: "Applications",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "NanoMethViz"
+  },
+  {
+    title: "A Bioconductor/R Workflow for the Detection and Visualization of Differential Chromatin Loops",
+    url: "https://f1000research.com/articles/13-1346",
+    authors: "Flores JP, Davis E, Kramer N, Love MI, Phanstiel DH",
+    year: 2024,
+    f1000type: "Method Article",
+    rjtype: "Applications",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "mariner"
+  },
+  {
+    title: "AnVILWorkflow: A runnable workflow package for Cloud-implemented bioinformatics analysis pipelines",
+    url: "https://f1000research.com/articles/13-1257",
+    authors: "Oh S, Gravel-Pucillo K, Ramos M, Schatz MC, Davis S, Carey V, Morgan M, Waldron L",
+    year: 2024,
+    f1000type: "Software Tool Article",
+    rjtype: "Packages",
+    workflow: "Yes",
+    pkg: "Yes",
+    pkgNote: "AnVILWorkflow"
+  },
+  {
+    title: "A Bioconductor workflow for processing, evaluating, and interpreting expression proteomics data",
+    url: "https://f1000research.com/articles/12-1402",
+    authors: "Hutchings C, Dawson CS, Krueger T, Lilley KS, Breckels LM",
+    year: 2024,
+    f1000type: "Software Tool Article",
+    rjtype: "Applications",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "QFeatures, MSnbase"
+  },
+  {
+    title: "sSNAPPY: an R/Bioconductor package for single-sample directional pathway perturbation analysis",
+    url: "https://f1000research.com/articles/13-628",
+    authors: "Liu W, Mäkinen V-P, Tilley WD, Pederson SM",
+    year: 2024,
+    f1000type: "Software Tool Article",
+    rjtype: "Packages",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "sSNAPPY"
+  },
+  {
+    title: "BASiCS workflow: a step-by-step analysis of expression variability using single cell RNA sequencing data",
+    url: "https://f1000research.com/articles/11-59",
+    authors: "O'Callaghan A, Eling N, Marioni JC, Vallejos CA",
+    year: 2024,
+    f1000type: "Software Tool Article",
+    rjtype: "Applications",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "BASiCS"
+  },
+  {
+    title: "Unraveling the timeline of gene expression: A pseudotemporal trajectory analysis of single-cell RNA sequencing data",
+    url: "https://f1000research.com/articles/12-684",
+    authors: "Cheng J, Smyth GK, Chen Y",
+    year: 2023,
+    f1000type: "Method Article",
+    rjtype: "Applications",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "edgeR, slingshot"
+  },
+  {
+    title: "BOREALIS: an R/Bioconductor package to detect outlier methylation from bisulfite sequencing data",
+    url: "https://f1000research.com/articles/11-1538",
+    authors: "Oliver GR, Jenkinson WG, Olson RJ, Schultz-Rogers LE, Klee EW",
+    year: 2022,
+    f1000type: "Method Article",
+    rjtype: "Packages",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "BOREALIS"
+  },
+  {
+    title: "satuRn: Scalable analysis of differential transcript usage for bulk and single-cell RNA-sequencing applications",
+    url: "https://f1000research.com/articles/10-374",
+    authors: "Gilis J, Vitting-Seerup K, Van den Berge K, Clement L",
+    year: 2022,
+    f1000type: "Method Article",
+    rjtype: "Packages",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "satuRn"
+  },
+  {
+    title: "An R-based reproducible and user-friendly preprocessing pipeline for CyTOF data",
+    url: "https://f1000research.com/articles/9-1263",
+    authors: "Crowell HL, Chevrier S, Jacobs A, Sivapatham S, Bodenmiller B, Robinson MD",
+    year: 2022,
+    f1000type: "Method Article",
+    rjtype: "Applications",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "CATALYST"
+  },
+  {
+    title: "target: an R package to predict combined function of transcription factors",
+    url: "https://f1000research.com/articles/10-344",
+    authors: "Ahmed M, Kim DR",
+    year: 2022,
+    f1000type: "Software Tool Article",
+    rjtype: "Packages",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "target"
+  },
+  {
+    title: "Doublet identification in single-cell sequencing data using scDblFinder",
+    url: "https://f1000research.com/articles/10-979",
+    authors: "Germain P-L, Lun A, Garcia Meixide C, Macnair W, Robinson MD",
+    year: 2022,
+    f1000type: "Software Tool Article",
+    rjtype: "Packages",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "scDblFinder"
+  },
+  {
+    title: "WIND (Workflow for pIRNAs aNd beyonD): a strategy for in-depth analysis of small RNA-seq data",
+    url: "https://f1000research.com/articles/10-1",
+    authors: "Geles K, Palumbo D, Sellitto A, Giurato G, et al.",
+    year: 2021,
+    f1000type: "Method Article",
+    rjtype: "Applications",
+    workflow: "No",
+    pkg: "No"
+  },
+  {
+    title: "Exploiting the DepMap cancer dependency data using the depmap R package",
+    url: "https://f1000research.com/articles/10-416",
+    authors: "Killian T, Gatto L",
+    year: 2021,
+    f1000type: "Software Tool Article",
+    rjtype: "Packages",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "depmap"
+  },
+  {
+    title: "HPAStainR: a Bioconductor and Shiny app to query protein expression patterns in the Human Protein Atlas",
+    url: "https://f1000research.com/articles/9-1210",
+    authors: "Nieuwenhuis TO, Halushka MK",
+    year: 2021,
+    f1000type: "Software Tool Article",
+    rjtype: "Packages",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "HPAStainR"
+  },
+  {
+    title: "TreeSummarizedExperiment: a S4 class for data with hierarchical structure",
+    url: "https://f1000research.com/articles/9-1246",
+    authors: "Huang R, Soneson C, Ernst FGM, Rue-Albrecht KC, Yu G, Hicks SC, Robinson MD",
+    year: 2021,
+    f1000type: "Software Tool Article",
+    rjtype: "Packages",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "TreeSummarizedExperiment"
+  },
+  {
+    title: "periodicDNA: an R/Bioconductor package to investigate k-mer periodicity in DNA",
+    url: "https://f1000research.com/articles/10-141",
+    authors: "Serizay J, Ahringer J",
+    year: 2021,
+    f1000type: "Software Tool Article",
+    rjtype: "Packages",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "periodicDNA"
+  },
+  {
+    title: "Interactive exploratory data analysis of Integrative Human Microbiome Project data using Metaviz",
+    url: "https://f1000research.com/articles/9-601",
+    authors: "Wagner J, Kancherla J, Braccia D, Matsumara J, Felix V, Crabtree J, Mahurkar A, Corrada Bravo H",
+    year: 2021,
+    f1000type: "Software Tool Article",
+    rjtype: "Packages",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "metagenomeSeq, Metaviz"
+  },
+  // Page 2
+  {
+    title: "netDx: Software for building interpretable patient classifiers by multi-'omic data integration using patient similarity networks",
+    url: "https://f1000research.com/articles/9-1239",
+    authors: "Pai S, Weber P, Isserlin R, Kaka H, Hui S, et al.",
+    year: 2021,
+    f1000type: "Software Tool Article",
+    rjtype: "Packages",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "netDx"
+  },
+  {
+    title: "Fast effect size shrinkage software for beta-binomial models of allelic imbalance",
+    url: "https://f1000research.com/articles/8-2024",
+    authors: "Zitovsky JP, Love MI",
+    year: 2020,
+    f1000type: "Method Article",
+    rjtype: "Packages",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "apeglm"
+  },
+  {
+    title: "A pipeline to analyse time-course gene expression data",
+    url: "https://f1000research.com/articles/9-1447",
+    authors: "Varoquaux N, Purdom E",
+    year: 2020,
+    f1000type: "Method Article",
+    rjtype: "Applications",
+    workflow: "No",
+    pkg: "No"
+  },
+  {
+    title: "A guide to creating design matrices for gene expression experiments",
+    url: "https://f1000research.com/articles/9-1444",
+    authors: "Law CW, Zeglinski K, Dong X, Alhamdoosh M, Smyth GK, Ritchie ME",
+    year: 2020,
+    f1000type: "Method Article",
+    rjtype: "Reviews and Proposals",
+    workflow: "No",
+    pkg: "No"
+  },
+  {
+    title: "A systematic performance evaluation of clustering methods for single-cell RNA-seq data",
+    url: "https://f1000research.com/articles/7-1141",
+    authors: "Duò A, Robinson MD, Soneson C",
+    year: 2020,
+    f1000type: "Research Article",
+    rjtype: "Comparisons and Benchmarking",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "scRNAseq"
+  },
+  {
+    title: "ExploreModelMatrix: Interactive exploration for improved understanding of design matrices and linear models in R",
+    url: "https://f1000research.com/articles/9-512",
+    authors: "Soneson C, Marini F, Geier F, Love MI, Stadler MB",
+    year: 2020,
+    f1000type: "Software Tool Article",
+    rjtype: "Packages",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "ExploreModelMatrix"
+  },
+  {
+    title: "clustifyr: an R package for automated single-cell RNA sequencing cluster classification",
+    url: "https://f1000research.com/articles/9-223",
+    authors: "Fu R, Gillen AE, Sheridan RM, Tian C, Daya M, Hao Y, Hesselberth JR, Riemondy KA",
+    year: 2020,
+    f1000type: "Software Tool Article",
+    rjtype: "Packages",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "clustifyr"
+  },
+  {
+    title: "StateHub-StatePaintR: rapid and reproducible chromatin state evaluation for custom genome annotation",
+    url: "https://f1000research.com/articles/7-214",
+    authors: "Coetzee SG, Ramjan Z, Dinh HQ, Berman BP, Hazelett DJ",
+    year: 2020,
+    f1000type: "Method Article",
+    rjtype: "Packages",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "StatePaintR"
+  },
+  {
+    title: "microbiomeDASim: Simulating longitudinal differential abundance for microbiome data",
+    url: "https://f1000research.com/articles/8-1769",
+    authors: "Williams J, Corrada Bravo H, Tom J, Paulson JN",
+    year: 2020,
+    f1000type: "Software Tool Article",
+    rjtype: "Packages",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "microbiomeDASim"
+  },
+  {
+    title: "Fluent genomics with plyranges and tximeta",
+    url: "https://f1000research.com/articles/9-109",
+    authors: "Lee S, Lawrence M, Love MI",
+    year: 2020,
+    f1000type: "Method Article",
+    rjtype: "Applications",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "plyranges, tximeta"
+  },
+  {
+    title: "CyTOF workflow: differential discovery in high-throughput high-dimensional cytometry datasets",
+    url: "https://f1000research.com/articles/6-748",
+    authors: "Nowicka M, Krieg C, Crowell HL, Weber LM, Hartmann FJ, Guglietta S, Becher B, Levesque MP, Robinson MD",
+    year: 2019,
+    f1000type: "Method Article",
+    rjtype: "Applications",
+    workflow: "Yes",
+    pkg: "Yes",
+    pkgNote: "cytofWorkflow, CATALYST"
+  },
+  {
+    title: "HDCytoData: Collection of high-dimensional cytometry benchmark datasets in Bioconductor object formats",
+    url: "https://f1000research.com/articles/8-1459",
+    authors: "Weber LM, Soneson C",
+    year: 2019,
+    f1000type: "Software Tool Article",
+    rjtype: "Packages",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "HDCytoData"
+  },
+  {
+    title: "RCy3: Network biology using Cytoscape from within R",
+    url: "https://f1000research.com/articles/8-1774",
+    authors: "Gustavsen JA, Pai S, Isserlin R, Demchak B, Pico AR",
+    year: 2019,
+    f1000type: "Software Tool Article",
+    rjtype: "Packages",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "RCy3"
+  },
+  {
+    title: "Using singscore to predict mutation status in acute myeloid leukemia from transcriptomic signatures",
+    url: "https://f1000research.com/articles/8-776",
+    authors: "Bhuva DD, Foroutan M, Xie Y, Lyu R, Cursons J, Davis MJ",
+    year: 2019,
+    f1000type: "Software Tool Article",
+    rjtype: "Applications",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "singscore"
+  },
+  {
+    title: "seqCAT: a Bioconductor R-package for variant analysis of high throughput sequencing data",
+    url: "https://f1000research.com/articles/7-1466",
+    authors: "Fasterius E, Al-Khalili Szigyarto C",
+    year: 2019,
+    f1000type: "Software Tool Article",
+    rjtype: "Packages",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "seqCAT"
+  },
+  {
+    title: "Enhancing gene set enrichment using networks",
+    url: "https://f1000research.com/articles/8-129",
+    authors: "Prummer M",
+    year: 2019,
+    f1000type: "Method Article",
+    rjtype: "Reviews and Proposals",
+    workflow: "No",
+    pkg: "No"
+  },
+  {
+    title: "A step-by-step guide to analyzing CAGE data using R/Bioconductor",
+    url: "https://f1000research.com/articles/8-886",
+    authors: "Thodberg M, Sandelin A",
+    year: 2019,
+    f1000type: "Software Tool Article",
+    rjtype: "Applications",
+    workflow: "Yes",
+    pkg: "No",
+    pkgNote: "CAGEWorkflow"
+  },
+  {
+    title: "BiocPkgTools: Toolkit for mining the Bioconductor package ecosystem",
+    url: "https://f1000research.com/articles/8-752",
+    authors: "Su S, Carey VJ, Shepherd L, Ritchie ME, Morgan MT, Davis S",
+    year: 2019,
+    f1000type: "Software Tool Article",
+    rjtype: "Packages",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "BiocPkgTools"
+  },
+  {
+    title: "TFutils: Data structures for transcription factor bioinformatics",
+    url: "https://f1000research.com/articles/8-152",
+    authors: "Stubbs BJ, Gopaulakrishnan S, Glass K, Pochet N, Everaert C, Raby B, Carey V",
+    year: 2019,
+    f1000type: "Software Tool Article",
+    rjtype: "Packages",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "TFutils"
+  },
+  {
+    title: "Optimized functional annotation of ChIP-seq data",
+    url: "https://f1000research.com/articles/8-612",
+    authors: "Khomtchouk BB, Koehler WC, Van Booven DJ, Wahlestedt C",
+    year: 2019,
+    f1000type: "Software Tool Article",
+    rjtype: "Applications",
+    workflow: "No",
+    pkg: "No"
+  },
+  // Page 3
+  {
+    title: "A Bioconductor workflow for the Bayesian analysis of spatial proteomics",
+    url: "https://f1000research.com/articles/8-446",
+    authors: "Crook OM, Breckels LM, Lilley KS, Kirk PDW, Gatto L",
+    year: 2019,
+    f1000type: "Method Article",
+    rjtype: "Applications",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "pRoloc"
+  },
+  {
+    title: "Expanding the Orthologous Matrix (OMA) programmatic interfaces: REST API and the OmaDB packages for R and Python",
+    url: "https://f1000research.com/articles/8-42",
+    authors: "Kaleb K, Warwick Vesztrocy A, Altenhoff AM, Dessimoz C",
+    year: 2019,
+    f1000type: "Software Tool Article",
+    rjtype: "Packages",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "OmaDB"
+  },
+  {
+    title: "False signals induced by single-cell imputation",
+    url: "https://f1000research.com/articles/7-1740",
+    authors: "Andrews TS, Hemberg M",
+    year: 2019,
+    f1000type: "Research Article",
+    rjtype: "Comparisons and Benchmarking",
+    workflow: "No",
+    pkg: "No"
+  },
+  {
+    title: "restfulSE: A semantically rich interface for cloud-scale genomics with Bioconductor",
+    url: "https://f1000research.com/articles/8-21",
+    authors: "Gopaulakrishnan S, Pollack S, Stubbs BJ, Pagès H, Readey J, Davis S, Waldron L, Morgan M, Carey V",
+    year: 2019,
+    f1000type: "Software Tool Article",
+    rjtype: "Packages",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "restfulSE"
+  },
+  {
+    title: "RNA-seq analysis is easy as 1-2-3 with limma, Glimma and edgeR",
+    url: "https://f1000research.com/articles/5-1408",
+    authors: "Law CW, Alhamdoosh M, Su S, Dong X, Tian L, Smyth GK, Ritchie ME",
+    year: 2018,
+    f1000type: "Software Tool Article",
+    rjtype: "Applications",
+    workflow: "Yes",
+    pkg: "Yes",
+    pkgNote: "RNAseq123, limma, edgeR, Glimma"
+  },
+  {
+    title: "Orchestrating a community-developed computational workshop and accompanying training materials",
+    url: "https://f1000research.com/articles/7-1656",
+    authors: "Davis S, Ramos M, Shepherd L, Turaga N, Geistlinger L, Morgan MT, Haibe-Kains B, Waldron L",
+    year: 2018,
+    f1000type: "Method Article",
+    rjtype: "Reviews and Proposals",
+    workflow: "No",
+    pkg: "No"
+  },
+  {
+    title: "Differential methylation analysis of reduced representation bisulfite sequencing experiments using edgeR",
+    url: "https://f1000research.com/articles/6-2055",
+    authors: "Chen Y, Pal B, Visvader JE, Smyth GK",
+    year: 2018,
+    f1000type: "Method Article",
+    rjtype: "Applications",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "edgeR"
+  },
+  {
+    title: "Swimming downstream: statistical analysis of differential transcript usage following Salmon quantification",
+    url: "https://f1000research.com/articles/7-952",
+    authors: "Love MI, Soneson C, Patro R",
+    year: 2018,
+    f1000type: "Method Article",
+    rjtype: "Applications",
+    workflow: "Yes",
+    pkg: "Yes",
+    pkgNote: "fishpond, tximeta"
+  },
+  {
+    title: "methyvim: Targeted, robust, and model-free differential methylation analysis in R",
+    url: "https://f1000research.com/articles/7-1424",
+    authors: "Hejazi NS, Phillips RV, Hubbard AE, van der Laan MJ",
+    year: 2018,
+    f1000type: "Software Tool Article",
+    rjtype: "Packages",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "methyvim"
+  },
+  {
+    title: "BgeeDB, an R package for retrieval of curated expression datasets and for gene list expression localization enrichment tests",
+    url: "https://f1000research.com/articles/5-2748",
+    authors: "Komljenovic A, Roux J, Wollbrett J, Robinson-Rechavi M, Bastian FB",
+    year: 2018,
+    f1000type: "Software Tool Article",
+    rjtype: "Packages",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "BgeeDB"
+  },
+  {
+    title: "drawProteins: a Bioconductor/R package for reproducible and programmatic generation of protein schematics",
+    url: "https://f1000research.com/articles/7-1105",
+    authors: "Brennan P",
+    year: 2018,
+    f1000type: "Software Tool Article",
+    rjtype: "Packages",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "drawProteins"
+  },
+  {
+    title: "Epiviz Web Components: reusable and extensible component library to visualize functional genomic datasets",
+    url: "https://f1000research.com/articles/7-1096",
+    authors: "Kancherla J, Zhang A, Gottfried B, Corrada Bravo H",
+    year: 2018,
+    f1000type: "Software Tool Article",
+    rjtype: "Packages",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "epivizr"
+  },
+  {
+    title: "An end to end workflow for differential gene expression using Affymetrix microarrays",
+    url: "https://f1000research.com/articles/5-1384",
+    authors: "Klaus B, Reisenauer S",
+    year: 2018,
+    f1000type: "Research Article",
+    rjtype: "Applications",
+    workflow: "No",
+    pkg: "No"
+  },
+  {
+    title: "A Bioconductor workflow for processing and analysing spatial proteomics data",
+    url: "https://f1000research.com/articles/5-2926",
+    authors: "Breckels LM, Mulvey CM, Lilley KS, Gatto L",
+    year: 2018,
+    f1000type: "Software Tool Article",
+    rjtype: "Applications",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "pRoloc"
+  },
+  {
+    title: "bcbioRNASeq: R package for bcbio RNA-seq analysis",
+    url: "https://f1000research.com/articles/6-1976",
+    authors: "Steinbaugh MJ, Pantano L, Kirchner RD, Barrera V, Chapman BA, et al.",
+    year: 2018,
+    f1000type: "Software Tool Article",
+    rjtype: "Packages",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "bcbioRNASeq"
+  },
+  {
+    title: "iSEE: Interactive SummarizedExperiment Explorer",
+    url: "https://f1000research.com/articles/7-741",
+    authors: "Rue-Albrecht K, Marini F, Soneson C, Lun ATL",
+    year: 2018,
+    f1000type: "Software Tool Article",
+    rjtype: "Packages",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "iSEE"
+  },
+  {
+    title: "TCGAbiolinksGUI: A graphical user interface to analyze cancer molecular and clinical data",
+    url: "https://f1000research.com/articles/7-439",
+    authors: "Silva TC, Colaprico A, Olsen C, Malta TM, Bontempi G, Ceccarelli M, Berman BP, Noushmehr H",
+    year: 2018,
+    f1000type: "Software Tool Article",
+    rjtype: "Packages",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "TCGAbiolinksGUI, TCGAbiolinks"
+  },
+  {
+    title: "Authoring Bioconductor workflows with BiocWorkflowTools",
+    url: "https://f1000research.com/articles/7-431",
+    authors: "Smith ML, Oleś AK, Huber W",
+    year: 2018,
+    f1000type: "Software Tool Article",
+    rjtype: "Packages",
+    workflow: "Yes",
+    pkg: "Yes",
+    pkgNote: "BiocWorkflowTools, BiocMetaWorkflow"
+  },
+  {
+    title: "PPInfer: a Bioconductor package for inferring functionally related proteins using protein interaction networks",
+    url: "https://f1000research.com/articles/6-1969",
+    authors: "Jung D, Ge X",
+    year: 2018,
+    f1000type: "Software Tool Article",
+    rjtype: "Packages",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "PPInfer"
+  },
+  // Page 4
+  {
+    title: "Using regulatory genomics data to interpret the function of disease variants and prioritise genes from expression studies",
+    url: "https://f1000research.com/articles/7-121",
+    authors: "Ferrero E",
+    year: 2018,
+    f1000type: "Method Article",
+    rjtype: "Applications",
+    workflow: "No",
+    pkg: "No"
+  },
+  {
+    title: "miRcomp-Shiny: Interactive assessment of qPCR-based microRNA quantification and quality control algorithms",
+    url: "https://f1000research.com/articles/6-2046",
+    authors: "Kemperman L, McCall MN",
+    year: 2017,
+    f1000type: "Software Tool Article",
+    rjtype: "Packages",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "miRcomp"
+  },
+  {
+    title: "Easy and efficient ensemble gene set testing with EGSEA",
+    url: "https://f1000research.com/articles/6-2010",
+    authors: "Alhamdoosh M, Law CW, Tian L, Sheridan JM, Ng M, Ritchie ME",
+    year: 2017,
+    f1000type: "Software Tool Article",
+    rjtype: "Packages",
+    workflow: "Yes",
+    pkg: "Yes",
+    pkgNote: "EGSEA123, EGSEA"
+  },
+  {
+    title: "recount workflow: Accessing over 70,000 human RNA-seq samples with Bioconductor",
+    url: "https://f1000research.com/articles/6-1558",
+    authors: "Collado-Torres L, Nellore A, Jaffe AE",
+    year: 2017,
+    f1000type: "Method Article",
+    rjtype: "Applications",
+    workflow: "Yes",
+    pkg: "Yes",
+    pkgNote: "recountWorkflow, recount"
+  },
+  {
+    title: "Bioconductor workflow for single-cell RNA sequencing: Normalization, dimensionality reduction, clustering, and lineage inference",
+    url: "https://f1000research.com/articles/6-1158",
+    authors: "Perraudeau F, Risso D, Street K, Purdom E, Dudoit S",
+    year: 2017,
+    f1000type: "Method Article",
+    rjtype: "Applications",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "zinbwave, clusterExperiment"
+  },
+  {
+    title: "GeneBreak: detection of recurrent DNA copy number aberration-associated chromosomal breakpoints within genes",
+    url: "https://f1000research.com/articles/5-2340",
+    authors: "van den Broek E, van Lieshout S, Rausch C, Ylstra B, van de Wiel MA, Meijer GA, Fijneman RJA, Abeln S",
+    year: 2017,
+    f1000type: "Software Tool Article",
+    rjtype: "Packages",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "GeneBreak"
+  },
+  {
+    title: "A cross-package Bioconductor workflow for analysing methylation array data",
+    url: "https://f1000research.com/articles/5-1281",
+    authors: "Maksimovic J, Phipson B, Oshlack A",
+    year: 2017,
+    f1000type: "Method Article",
+    rjtype: "Applications",
+    workflow: "Yes",
+    pkg: "Yes",
+    pkgNote: "methylationArrayAnalysis, minfi, limma"
+  },
+  {
+    title: "TCGA Workflow: Analyze cancer genomics and epigenomics data using Bioconductor packages",
+    url: "https://f1000research.com/articles/5-1542",
+    authors: "Silva TC, Colaprico A, Olsen C, D'Angelo F, Bontempi G, Ceccarelli M, Noushmehr H",
+    year: 2016,
+    f1000type: "Software Tool Article",
+    rjtype: "Applications",
+    workflow: "Yes",
+    pkg: "Yes",
+    pkgNote: "TCGAWorkflow, TCGAbiolinks"
+  },
+  {
+    title: "DRIMSeq: a Dirichlet-multinomial framework for multivariate count outcomes in genomics",
+    url: "https://f1000research.com/articles/5-1356",
+    authors: "Nowicka M, Robinson MD",
+    year: 2016,
+    f1000type: "Method Article",
+    rjtype: "Packages",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "DRIMSeq"
+  },
+  {
+    title: "A guide and best practices for R/Bioconductor tool integration in Galaxy",
+    url: "https://f1000research.com/articles/5-2757",
+    authors: "Turaga N, Freeberg MA, Baker D, Chilton J, Galaxy Team, Nekrutenko A, Taylor J",
+    year: 2016,
+    f1000type: "Software Tool Article",
+    rjtype: "Reviews and Proposals",
+    workflow: "No",
+    pkg: "No"
+  },
+  {
+    title: "RNA-Seq workflow: gene-level exploratory analysis and differential expression",
+    url: "https://f1000research.com/articles/4-1070",
+    authors: "Love MI, Anders S, Kim V, Huber W",
+    year: 2016,
+    f1000type: "Research Article",
+    rjtype: "Applications",
+    workflow: "Yes",
+    pkg: "Yes",
+    pkgNote: "rnaseqGene, DESeq2"
+  },
+  {
+    title: "Bioconductor Workflow for Microbiome Data Analysis: from raw reads to community analyses",
+    url: "https://f1000research.com/articles/5-1492",
+    authors: "Callahan BJ, Sankaran K, Fukuyama JA, McMurdie PJ, Holmes SP",
+    year: 2016,
+    f1000type: "Research Article",
+    rjtype: "Applications",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "dada2, phyloseq"
+  },
+  {
+    title: "A step-by-step workflow for low-level analysis of single-cell RNA-seq data with Bioconductor",
+    url: "https://f1000research.com/articles/5-2122",
+    authors: "Lun ATL, McCarthy DJ, Marioni JC",
+    year: 2016,
+    f1000type: "Software Tool Article",
+    rjtype: "Applications",
+    workflow: "Yes",
+    pkg: "Yes",
+    pkgNote: "simpleSingleCell, scran"
+  },
+  {
+    title: "Genomic variant annotation workflow for clinical applications",
+    url: "https://f1000research.com/articles/5-1963",
+    authors: "Thurnherr T, Singer F, Stekhoven DJ, Beerenwinkel N",
+    year: 2016,
+    f1000type: "Software Tool Article",
+    rjtype: "Applications",
+    workflow: "No",
+    pkg: "No"
+  },
+  {
+    title: "From reads to genes to pathways: differential expression analysis of RNA-Seq experiments using Rsubread and the edgeR quasi-likelihood pipeline",
+    url: "https://f1000research.com/articles/5-1438",
+    authors: "Chen Y, Lun ATL, Smyth GK",
+    year: 2016,
+    f1000type: "Software Tool Article",
+    rjtype: "Applications",
+    workflow: "Yes",
+    pkg: "Yes",
+    pkgNote: "RnaSeqGeneEdgeRQL, edgeR, Rsubread"
+  },
+  {
+    title: "regionReport: Interactive reports for region-level and feature-level genomic analyses",
+    url: "https://f1000research.com/articles/4-105",
+    authors: "Collado-Torres L, Jaffe AE, Leek JT",
+    year: 2016,
+    f1000type: "Software Tool Article",
+    rjtype: "Packages",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "regionReport"
+  },
+  {
+    title: "Infrastructure for genomic interactions: Bioconductor classes for Hi-C, ChIA-PET and related experiments",
+    url: "https://f1000research.com/articles/5-950",
+    authors: "Lun ATL, Perry M, Ing-Simmons E",
+    year: 2016,
+    f1000type: "Software Tool Article",
+    rjtype: "Packages",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "InteractionSet"
+  },
+  {
+    title: "RiboProfiling: a Bioconductor package for standard Ribo-seq pipeline processing",
+    url: "https://f1000research.com/articles/5-1309",
+    authors: "Popa A, Lebrigand K, Paquet A, Nottet N, Robbe-Sermesant K, Waldmann R, Barbry P",
+    year: 2016,
+    f1000type: "Software Tool Article",
+    rjtype: "Packages",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "RiboProfiling"
+  },
+  {
+    title: "The Bioconductor channel in F1000Research",
+    url: "https://f1000research.com/articles/4-217",
+    authors: "Huber W, Carey VJ, Davis S, Hansen KD, Morgan M",
+    year: 2016,
+    f1000type: "Editorial",
+    rjtype: "Reviews and Proposals",
+    workflow: "No",
+    pkg: "No"
+  },
+  {
+    title: "Differential analyses for RNA-seq: transcript-level estimates improve gene-level inferences",
+    url: "https://f1000research.com/articles/4-1521",
+    authors: "Soneson C, Love MI, Robinson MD",
+    year: 2016,
+    f1000type: "Method Article",
+    rjtype: "Comparisons and Benchmarking",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "tximport"
+  },
+  // Page 5
+  {
+    title: "From reads to regions: a Bioconductor workflow to detect differential binding in ChIP-seq data",
+    url: "https://f1000research.com/articles/4-1080",
+    authors: "Lun ATL, Smyth GK",
+    year: 2016,
+    f1000type: "Software Tool Article",
+    rjtype: "Applications",
+    workflow: "Yes",
+    pkg: "Yes",
+    pkgNote: "chipseqDB, csaw"
+  },
+  {
+    title: "GOsummaries: an R Package for Visual Functional Annotation of Experimental Data",
+    url: "https://f1000research.com/articles/4-574",
+    authors: "Kolde R, Vilo J",
+    year: 2015,
+    f1000type: "Software Tool Article",
+    rjtype: "Packages",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "GOsummaries"
+  },
+  {
+    title: "edgeR: a versatile tool for the analysis of shRNA-seq and CRISPR-Cas9 genetic screens",
+    url: "https://f1000research.com/articles/3-95",
+    authors: "Dai Z, Sheridan JM, Gearing LJ, Moore DL, Su S, Wormald S, Wilcox S, O'Connor L, Dickins RA, Blewitt ME, Ritchie ME",
+    year: 2014,
+    f1000type: "Software Tool Article",
+    rjtype: "Applications",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "edgeR"
+  },
+  {
+    title: "shinyMethyl: interactive quality control of Illumina 450k DNA methylation arrays in R",
+    url: "https://f1000research.com/articles/3-175",
+    authors: "Fortin J-P, Fertig E, Hansen K",
+    year: 2014,
+    f1000type: "Software Tool Article",
+    rjtype: "Packages",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "shinyMethyl"
+  },
+  {
+    title: "Cyrface: An interface from Cytoscape to R that provides a user interface to R packages",
+    url: "https://f1000research.com/articles/2-192",
+    authors: "Gonçalves E, Mirlach F, Saez-Rodriguez J",
+    year: 2014,
+    f1000type: "Software Tool Article",
+    rjtype: "Packages",
+    workflow: "No",
+    pkg: "No"
+  },
+  {
+    title: "illuminaio: An open source IDAT parsing tool for Illumina microarrays",
+    url: "https://f1000research.com/articles/2-264",
+    authors: "Smith ML, Baggerly KA, Bengtsson H, Ritchie ME, Hansen KD",
+    year: 2013,
+    f1000type: "Software Tool Article",
+    rjtype: "Packages",
+    workflow: "No",
+    pkg: "Yes",
+    pkgNote: "illuminaio"
+  },
+];
+
+function f1000Badge(t) {
+  if (t === "Method Article") return `<span class="badge badge-f-method">Method Article</span>`;
+  if (t === "Software Tool Article") return `<span class="badge badge-f-software">Software Tool Article</span>`;
+  if (t === "Research Article") return `<span class="badge badge-f-research">Research Article</span>`;
+  if (t === "Editorial") return `<span class="badge badge-f-editorial">Editorial</span>`;
+  return `<span class="badge">${t}</span>`;
+}
+
+function rjBadge(t) {
+  if (t === "Packages") return `<span class="badge badge-rj-packages">Packages</span>`;
+  if (t === "Reviews and Proposals") return `<span class="badge badge-rj-reviews">Reviews &amp; Proposals</span>`;
+  if (t === "Comparisons and Benchmarking") return `<span class="badge badge-rj-compare">Comparisons &amp; Benchmarking</span>`;
+  if (t === "Applications") return `<span class="badge badge-rj-apps">Applications</span>`;
+  return `<span class="badge">${t}</span>`;
+}
+
+function renderTable(rows) {
+  const body = document.getElementById('tableBody');
+  document.getElementById('count').textContent = `Showing ${rows.length} of ${data.length} articles`;
+  body.innerHTML = rows.map((d, i) => `
+    <tr>
+      <td>${i+1}</td>
+      <td class="title"><a href="${d.url}" target="_blank">${d.title}</a></td>
+      <td class="authors">${d.authors}</td>
+      <td>${d.year}</td>
+      <td>${f1000Badge(d.f1000type)}</td>
+      <td>${rjBadge(d.rjtype)}</td>
+      <td class="${d.workflow === 'Yes' ? 'yes' : 'no'}">${d.workflow === 'Yes' ? '✓ Yes' : '—'}</td>
+      <td class="${d.pkg === 'Yes' ? 'yes' : 'no'}">${d.pkg === 'Yes' ? `✓ Yes${d.pkgNote ? `<br><span style="font-weight:400;font-size:11px;color:#555">${d.pkgNote}</span>` : ''}` : '—'}</td>
+    </tr>
+  `).join('');
+}
+
+function filterTable() {
+  const search = document.getElementById('search').value.toLowerCase();
+  const f1000 = document.getElementById('filterF1000').value;
+  const rj = document.getElementById('filterRJ').value;
+  const wf = document.getElementById('filterWorkflow').value;
+  const pkg = document.getElementById('filterPkg').value;
+  const yr = document.getElementById('filterYear').value;
+
+  const filtered = data.filter(d => {
+    if (search && !d.title.toLowerCase().includes(search) && !d.authors.toLowerCase().includes(search)) return false;
+    if (f1000 && d.f1000type !== f1000) return false;
+    if (rj && d.rjtype !== rj) return false;
+    if (wf && d.workflow !== wf) return false;
+    if (pkg && d.pkg !== pkg) return false;
+    if (yr && String(d.year) !== yr) return false;
+    return true;
+  });
+  renderTable(filtered);
+}
+
+renderTable(data);
+</script>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
