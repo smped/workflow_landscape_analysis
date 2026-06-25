@@ -110,14 +110,24 @@ f1000r %>%
 ```{r}
 f1000r %>% 
   dplyr::filter(`Bioc Workflow` == "Yes") %>% 
-  dplyr::count(`F1000R Type`) %>% 
+  dplyr::count(`F1000R Type`, `Bioc Package`) %>% 
+  pivot_wider(
+    names_from = `Bioc Package`, values_from = `n`, values_fill = 0,
+    names_prefix = "Package: "
+  ) %>% 
+  mutate(N = `Package: Yes` + `Package: No`) %>% 
+  relocate(N, .after = `F1000R Type`) %>% 
   bind_rows(
-    tibble(`F1000R Type` = "Total", n = sum(.$n))
+    tibble(
+      `F1000R Type` = "Total", N = sum(.$N),
+      `Package: Yes` = sum(.[["Package: Yes"]]),
+      `Package: No` = sum(.[["Package: No"]])
+    )
   ) %>% 
   pander(
-    justify = "lr", 
+    justify = "lrrr", 
     emphasize.strong.rows = which(grepl("Total", .$`F1000R Type`)),
-    caption = "Of the above articles also published as a Bioc Workflow, which F1000R article type were they initially published as."
+    caption = "Of the above articles also published as a Bioc Workflow, which F1000R article type were they initially published as, and was there a Bioc Package associated with the workflow."
   )
 ```
 
